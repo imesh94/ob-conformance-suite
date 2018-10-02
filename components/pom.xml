@@ -37,6 +37,7 @@
         <module>com.wso2.finance.open.banking.conformance.test.core</module>
         <module>com.wso2.finance.open.banking.conformance.mgt</module>
         <module>com.wso2.finance.open.banking.conformance.api</module>
+        <module>ui-component</module>
     </modules>
 
 </project>
