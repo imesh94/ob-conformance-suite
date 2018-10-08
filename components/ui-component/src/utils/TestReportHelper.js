@@ -16,14 +16,24 @@
  * under the License.
  */
 
-
+/**
+ * ClassName: TestReportHelper
+ *
+ * Responsible for calculating result summary and statistics when
+ * a report is given.
+ *
+ */
 export default class TestReportHelper {
-    /* Pass/Fail count of the whole test plan */
+    /**
+     * Gives the Pass/Fail count of the whole test plan
+     * @param {object} testData - JSON containing results
+     * @returns {object} results - JSON with passed/failed count and pass-rate
+     */
     getTestSummary(testData) {
         const results = { passed: 0, failed: 0, rate: 0 };
         let curResult;
-        for (const spec in testData) {
-            curResult = this.getAPIResult(testData[spec], this);
+        for (const api of Object.keys(testData)) {
+            curResult = this.getAPIResult(testData[api]);
             results.passed += curResult.passed;
             results.failed += curResult.failed;
         }
@@ -35,43 +45,68 @@ export default class TestReportHelper {
         return results;
     }
 
-    /* Pass/Fail feature count of the API */
-    getAPIResult(api, thisClass) {
+    /**
+     * Gives the Pass/Fail feature count of the API
+     * @param {object} api - JSON containing api results
+     * @returns {object} results - JSON with passed/failed feature count
+     */
+    getAPIResult(api) {
         const results = { passed: 0, failed: 0 };
         let curResult;
         api.forEach((feature) => {
-            curResult = thisClass.getFeatureResult(feature, thisClass);
+            curResult = this.getFeatureResult(feature);
             results.passed += (curResult.failed === 0) * 1;
             results.failed += (curResult.failed > 0) * 1;
         });
         return results;
     }
 
-    /* Pass/Fail scenario count of the feature */
-    getFeatureResult(feature, thisClass) {
+    /**
+     * Gives the Pass/Fail scenario count of the feature
+     * @param {object} feature - JSON containing feature results
+     * @returns {object} results - JSON with passed/failed scenario count
+     */
+    getFeatureResult(feature) {
         const results = { passed: 0, failed: 0 };
         feature.elements.forEach((scenario) => {
-            thisClass.getScenarioResult(scenario, thisClass) === true ? results.passed += 1 : results.failed += 1;
+            if (this.getScenarioResult(scenario)) {
+                results.passed += 1;
+            } else {
+                results.failed += 1;
+            }
         });
         return results;
     }
 
-    /* Pass/Fail status of the scenario (based on step results) */
-    getScenarioResult(scenario, thisClass) {
+    /**
+     * Gives the Pass/Fail status of the scenario (based on step results)
+     * @param {object} scenario - JSON containing scenario results
+     * @returns {object} results - JSON with passed/failed step count
+     */
+    getScenarioResult(scenario) {
         let status = true;
         scenario.steps.forEach((step) => {
-            status = status && (thisClass.getStepResult(step) === 'passed');
+            status = status && (this.getStepResult(step) === 'passed');
         });
         return status;
     }
 
+    /**
+     * Gives the Pass/Fail status of a single step
+     * @param {object} step - JSON containing step
+     * @returns {string} status - 'passed' or 'failed'
+     */
     getStepResult(step) {
         return step.result.status;
     }
 
-    /* Pass/Fail status of the whole feature (based on scenario results) */
-    getFeatureResultStatus(feature, thisClass) {
-        const result = thisClass.getFeatureResult(feature, thisClass);
+    /**
+     * Gives the Pass/Fail status of a single feature (based on scenario results)
+     * @param {object} feature - JSON containing feature results
+     * @returns {string} status - 'Passed' or 'Failed'
+     */
+    getFeatureResultStatus(feature) {
+        const result = this.getFeatureResult(feature);
         if (result.failed === 0) {
             return { class: 'passed-feature', status: 'Passed' };
         }
@@ -79,12 +114,15 @@ export default class TestReportHelper {
     }
 
     /* Number of features to be tested in the test plan */
+    /**
+     * Gives the Number of features to be tested in the test plan
+     * @param {object} testPlan - JSON containing the test plan
+     * @returns {number} count - Number of features
+     */
     getFeatureCount(testPlan) {
         let count = 0;
-        for (const api in testPlan.specifications) {
-            for (const scenario in testPlan.specifications[api].features) {
-                count += 1;
-            }
+        for (const api of Object.keys(testPlan.specifications)) {
+            count += Object.keys(testPlan.specifications[api].features).length;
         }
         return count;
     }
