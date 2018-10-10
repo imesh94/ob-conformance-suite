@@ -50,6 +50,8 @@ public class TestPlanRunnerManager implements RunnerManagerCallback {
         this.resultQueueMap.put(uuid, new ArrayBlockingQueue(50));
         this.runnerInstanceMap.put(uuid,
                 new TestPlanRunnerInstance(testPlan, this.resultQueueMap.get(uuid), this));
+
+        //Store plan in DB - TestPlanDAO
         return uuid;
     }
 
@@ -151,6 +153,7 @@ public class TestPlanRunnerManager implements RunnerManagerCallback {
     public void onUpdateResult(Report report) {
 
         reportStore.get(report.getTestId()).put(report.getReportId(), report);
+        //Store report in DB - ReportDAO
     }
 
     /**

@@ -95,6 +95,8 @@ public class TestPlanAPI {
                         new TestPlanDTO(uuid, testPlan, this.runnerManager.getAllReports(uuid))
                 )
         );
+
+        //Get data from DB
         return results;
     }
 
