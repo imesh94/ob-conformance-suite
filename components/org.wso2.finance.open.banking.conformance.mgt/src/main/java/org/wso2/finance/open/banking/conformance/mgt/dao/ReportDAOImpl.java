@@ -2,11 +2,12 @@ package org.wso2.finance.open.banking.conformance.mgt.dao;
 
 import com.google.gson.Gson;
 import org.wso2.finance.open.banking.conformance.mgt.db.DBConnector;
+import org.wso2.finance.open.banking.conformance.mgt.dto.TestPlanDTO;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
+import org.wso2.finance.open.banking.conformance.mgt.testconfig.TestPlan;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDAOImpl implements ReportDAO{
@@ -67,6 +68,50 @@ public class ReportDAOImpl implements ReportDAO{
 
     @Override
     public List<Report> getReports(String userID, String uuid) {
-        return null;
+
+        Gson gson = new Gson();
+        List<Report> reports = new ArrayList<Report>();
+        Connection conn = DBConnector.getConnection();
+        Statement stmt = null;
+
+        try {
+            // Execute query
+            stmt = conn.createStatement();
+            String sql =  "SELECT * FROM Report WHERE testID='"+uuid+"'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                int reportID = rs.getInt("reportID");
+                String reportJson = rs.getString("report");
+                String runTime = rs.getString("runTime");
+
+                Report report = gson.fromJson(reportJson, Report.class);
+                reports.add(report);
+                // System.out.println(testPlans.toString());
+            }
+            // Clean-up
+            stmt.close();
+            conn.close();
+        } catch(SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch(Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try{
+                if(stmt!=null) stmt.close();
+            } catch(SQLException se2) {
+            } // nothing we can do
+            try {
+                if(conn!=null) conn.close();
+            } catch(SQLException se){
+                se.printStackTrace();
+            } //end finally try
+        } //end try
+        System.out.println("Goodbye!");
+
+        return reports;
     }
 }
