@@ -18,8 +18,9 @@
 
 package org.wso2.finance.open.banking.conformance.test.core.runner;
 
-import org.wso2.finance.open.banking.conformance.mgt.dao.H2TestPlanDAO;
+import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAOImpl;
 import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAO;
+import org.wso2.finance.open.banking.conformance.mgt.db.DBConnector;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
 import org.wso2.finance.open.banking.conformance.mgt.testconfig.TestPlan;
 
@@ -42,7 +43,7 @@ public class TestPlanRunnerManager {
      */
     public String addPlan(TestPlan testPlan) {
 
-        TestPlanDAO testPlanDAO = new H2TestPlanDAO();
+        TestPlanDAO testPlanDAO = new TestPlanDAOImpl();
         String uuid = UUID.randomUUID().toString();
         testPlan.setTestId(uuid);
         this.runnerInstanceMap.put(uuid, new TestPlanRunnerInstance(testPlan));

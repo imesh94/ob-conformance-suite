@@ -40,10 +40,12 @@
             <version>${com.google.code.gson.version}</version>
         </dependency>
 
+        <!--JDBC Template
         <dependency>
             <groupId>org.wso2.carbon.utils</groupId>
             <artifactId>org.wso2.carbon.database.utils</artifactId>
-        </dependency>
+            <version>2.0.8</version>
+        </dependency>-->
 
     </dependencies>
 

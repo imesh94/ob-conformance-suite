@@ -19,7 +19,7 @@
 package org.wso2.finance.open.banking.conformance.api.services;
 
 import org.wso2.finance.open.banking.conformance.api.ApplicationDataHolder;
-import org.wso2.finance.open.banking.conformance.mgt.dao.H2TestPlanDAO;
+import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAOImpl;
 import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAO;
 import org.wso2.finance.open.banking.conformance.mgt.dto.TestPlanDTO;
 import org.wso2.finance.open.banking.conformance.api.dto.TestPlanRequestDTO;
@@ -90,7 +90,7 @@ public class TestPlanAPI {
     @Produces("application/json")
     public Map<String, TestPlanDTO> getAllTestPlans() {
 
-        TestPlanDAO testPlanDAO = new H2TestPlanDAO();
+        TestPlanDAO testPlanDAO = new TestPlanDAOImpl();
         Map<String, TestPlanDTO> results = new HashMap<>();
         /*this.runnerManager.getAllTests().forEach(
                 (uuid, testPlan) -> results.put(

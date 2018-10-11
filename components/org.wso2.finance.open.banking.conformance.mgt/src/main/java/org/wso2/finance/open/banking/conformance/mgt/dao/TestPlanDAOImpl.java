@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class H2TestPlanDAO implements TestPlanDAO{
+public class TestPlanDAOImpl implements TestPlanDAO{
 
     @Override
     public void storeTestPlan(String userID, String uuid, TestPlan testPlan) {

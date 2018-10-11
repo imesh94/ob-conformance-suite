@@ -1,5 +1,6 @@
 package org.wso2.finance.open.banking.conformance.api.dao;
 
+import org.wso2.finance.open.banking.conformance.mgt.dao.ReportDAO;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
 
 import java.util.List;

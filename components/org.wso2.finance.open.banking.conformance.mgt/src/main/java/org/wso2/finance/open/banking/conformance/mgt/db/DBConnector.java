@@ -34,16 +34,26 @@ public class DBConnector {
             System.out.println("Connecting to database...");
 
             // Execute query
-            System.out.println("Creating table in given database...");
+            System.out.println("Creating tables in given database...");
             stmt = conn.createStatement();
             String sql =  "CREATE TABLE   TestPlan " +
                     "(testID VARCHAR(100) not NULL, " +
                     " userID VARCHAR(50), " +
                     " testConfig CLOB, " +
                     " creationTime DATETIME, " +
-                    " PRIMARY KEY ( testID ))";
+                    " PRIMARY KEY ( testID, userID ))";
             stmt.executeUpdate(sql);
-            System.out.println("Created table in given database...");
+            System.out.println("Created TestPlan table in given database...");
+
+            sql =  "CREATE TABLE   Report " +
+                    "(reportID INT not NULL, " +
+                    "testID VARCHAR(100) not NULL, " +
+                    " userID VARCHAR(50), " +
+                    " report CLOB, " +
+                    " runTime DATETIME, " +
+                    " PRIMARY KEY ( reportID, testID, userID ))";
+            stmt.executeUpdate(sql);
+            System.out.println("Created Report table in given database...");
 
             // Clean-up
             stmt.close();
