@@ -101,7 +101,7 @@ public class TestPlanAPI {
 
         //Get data from DB
         results = testPlanDAO.getTestPlans("adminx");
-        System.out.println(results);
+        // System.out.println(results);
         return results;
     }
 

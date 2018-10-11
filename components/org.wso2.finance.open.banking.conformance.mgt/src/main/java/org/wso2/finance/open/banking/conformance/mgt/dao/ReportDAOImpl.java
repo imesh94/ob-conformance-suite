@@ -2,9 +2,7 @@ package org.wso2.finance.open.banking.conformance.mgt.dao;
 
 import com.google.gson.Gson;
 import org.wso2.finance.open.banking.conformance.mgt.db.DBConnector;
-import org.wso2.finance.open.banking.conformance.mgt.dto.TestPlanDTO;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
-import org.wso2.finance.open.banking.conformance.mgt.testconfig.TestPlan;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.List;
 public class ReportDAOImpl implements ReportDAO{
 
     @Override
-    public void storeReport(String userID, String uuid, int reportID, Report report) {
+    public void storeReport(String userID, String uuid, Report report) {
         Gson gson = new Gson();
         Connection conn = DBConnector.getConnection();
 
@@ -28,13 +26,13 @@ public class ReportDAOImpl implements ReportDAO{
             // Execute query
             String sql =  "INSERT INTO Report VALUES  (?,?,?,?,?)";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, reportID);
+            stmt.setInt(1, 1);
             stmt.setString(2, uuid);
             stmt.setString(3, userID);
             stmt.setString(4, reportJson);
             stmt.setString(5, currentTime);
             stmt.executeUpdate();
-            System.out.println("Report data Added to DB........");
+            // System.out.println("Report data Added to DB........");
 
             // Clean-up
             stmt.close();
@@ -57,13 +55,55 @@ public class ReportDAOImpl implements ReportDAO{
                 se.printStackTrace();
             } //end finally try
         } //end try
-        System.out.println("Goodbye from REPORT-DAO!");
+        // System.out.println("Exit from REPORT-DAO!");
 
     }
 
     @Override
-    public Report getReport(String userID, String uuid, Integer reportID) {
-        return null;
+    public Report getReport(String userID, String uuid, int reportID) {
+        Gson gson = new Gson();
+        Report report = null;
+        Connection conn = DBConnector.getConnection();
+        Statement stmt = null;
+
+        try {
+            // Execute query
+            stmt = conn.createStatement();
+            String sql =  "SELECT * FROM Report WHERE userID='"+userID+"' AND testID='"+uuid+"' AND reportID='"+reportID+"'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                String reportJson = rs.getString("report");
+                String creationTime = rs.getString("runTime");
+                report = gson.fromJson(reportJson, Report.class);
+
+            }
+            // Clean-up
+            stmt.close();
+            conn.close();
+        } catch(SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch(Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try{
+                if(stmt!=null) stmt.close();
+            } catch(SQLException se2) {
+            } // nothing we can do
+            try {
+                if(conn!=null) conn.close();
+            } catch(SQLException se){
+                se.printStackTrace();
+            } //end finally try
+        } //end try
+        // System.out.println("Exit from storeReport()");
+
+        return report;
+
+
     }
 
     @Override
@@ -110,7 +150,6 @@ public class ReportDAOImpl implements ReportDAO{
                 se.printStackTrace();
             } //end finally try
         } //end try
-        System.out.println("Goodbye!");
 
         return reports;
     }

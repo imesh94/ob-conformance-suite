@@ -20,6 +20,8 @@ package org.wso2.finance.open.banking.conformance.test.core.runner;
 
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
+import org.wso2.finance.open.banking.conformance.mgt.dao.ReportDAO;
+import org.wso2.finance.open.banking.conformance.mgt.dao.ReportDAOImpl;
 import org.wso2.finance.open.banking.conformance.mgt.models.AttributeGroup;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
 import org.wso2.finance.open.banking.conformance.mgt.testconfig.Feature;
@@ -131,7 +133,6 @@ public class TestPlanRunnerInstance extends Thread {
      * @return Report with test results
      */
     public Report buildReport() {
-
         return new Report(testPlan.getTestId(), reportId, formattedResult, status, new Date());
     }
 
@@ -139,6 +140,7 @@ public class TestPlanRunnerInstance extends Thread {
      * Start running tests.
      */
     public void run() {
+        ReportDAO reportDAO = new ReportDAOImpl();
 
         context = Context.getInstance();
         context.init(testPlan);
@@ -149,6 +151,10 @@ public class TestPlanRunnerInstance extends Thread {
         this.status = Report.RunnerState.DONE;
         this.testPlan.setLastRun(new Date());
         queueStopMessege();
+
+        // Add report to DB
+        reportDAO.storeReport("adminx", testPlan.getTestId(), this.buildReport());
+
         this.interrupt();
     }
 

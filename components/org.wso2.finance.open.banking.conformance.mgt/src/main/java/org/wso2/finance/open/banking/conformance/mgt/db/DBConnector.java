@@ -17,7 +17,7 @@ public class DBConnector {
         Connection conn = null;
         try {
             Class.forName(JDBC_DRIVER);
-            System.out.println("Connecting to database...");
+            // System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
         } catch(Exception e) {
             //Handle errors for Class.forName
@@ -76,6 +76,5 @@ public class DBConnector {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
     }
 }

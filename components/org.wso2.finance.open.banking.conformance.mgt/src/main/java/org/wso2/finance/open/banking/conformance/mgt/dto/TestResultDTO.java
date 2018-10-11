@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.finance.open.banking.conformance.api.dto;
+package org.wso2.finance.open.banking.conformance.mgt.dto;
 
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
 import org.wso2.finance.open.banking.conformance.mgt.testconfig.TestPlan;

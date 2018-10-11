@@ -20,7 +20,6 @@ package org.wso2.finance.open.banking.conformance.test.core.runner;
 
 import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAOImpl;
 import org.wso2.finance.open.banking.conformance.mgt.dao.TestPlanDAO;
-import org.wso2.finance.open.banking.conformance.mgt.db.DBConnector;
 import org.wso2.finance.open.banking.conformance.mgt.models.Report;
 import org.wso2.finance.open.banking.conformance.mgt.testconfig.TestPlan;
 
