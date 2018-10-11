@@ -19,6 +19,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Application header.
+ * @returns { React.Component } Header View
+ */
 const AppHeader = () => (
     <header className='header header-default'>
         <div className='container-fluid'>
@@ -35,7 +39,7 @@ const AppHeader = () => (
             </div>
             <div className='pull-right header-user'>
                 <i className='fas fa-lg fa-university' />
-                <span className='span-icon'>National Australia Bank (NAB)</span>
+                <span className='span-icon'>Test Suite User</span>
             </div>
         </div>
     </header>
