@@ -39,6 +39,12 @@
             <artifactId>gson</artifactId>
             <version>${com.google.code.gson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.utils</groupId>
+            <artifactId>org.wso2.carbon.database.utils</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
